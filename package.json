@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "babel-polyfill": "^6.23.0",
+    "berger-table-generator": "^1.0.1",
     "casual-browserify": "^1.5.12",
     "cx": "^17.6.9",
     "cx-react": "^17.4.1",
