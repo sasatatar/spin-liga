@@ -13,12 +13,12 @@ export default <cx>
             </FlexRow>
         </Section>
         <Section mod="well" title="Igrači" hLevel={4}>
-            <Grid records={bind("$page.players")}
+            <Grid records={bind("players")}
                 border
                 selection={{ type: KeySelection, bind: "$page.id" }}
                 columns={[
                     { header: 'Ime i prezime', field: 'name', sortable: true },
-                    { header: 'Datum rođenja', field: 'born', sortable: true, format: 'd' },
+                    { header: 'Datum rođenja', field: 'born', sortable: true, format: 'datetime;ddMMYYYY' },
                     { header: 'Visina', field: 'height', sortable: true, format: 'suffix; cm|N/A' },
                     { header: 'Tjelesna masa', field: 'weight', sortable: true, format: 'suffix; kg|N/A' },
                     { header: 'Ljevak ili dešnjak', field: 'hand', sortable: true }

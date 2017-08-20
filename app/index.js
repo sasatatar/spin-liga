@@ -3,7 +3,9 @@ import { Url, History, Widget, startAppLoop } from 'cx/ui';
 import { Timing, Debug } from 'cx/util';
 
 import {enableAllInternalDependencies} from 'cx/widgets';
+import {Culture} from 'cx/ui';
 
+Culture.setCulture('sr-Latn-RS');
 enableAllInternalDependencies();
 
 //css

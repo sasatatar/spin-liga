@@ -1,5 +1,6 @@
 import { Controller } from 'cx/ui';
 import uuid from 'uuid';
+import bergerTable from 'berger-table-generator';
 
 import { players } from '../../data/players';
 
@@ -7,22 +8,23 @@ export default class extends Controller {
     onInit() {
         this.store.init('players', players);
 
-        this.addTrigger('$page.form', ['$page.id', 'players'], (id, records) => {
-            this.store.set('$page.form', records.find(a => a.id == id));
-        });
+        this.addComputable('$page.schedule', ['schedule'], schedule => {
+            return (schedule || []).map(game => ({
+                ...game,
+                teamA: game.teamA.name,
+                teamB: game.teamB.name
+            }));
+        })
 
     }
 
-    onEdit(e) {
-        this.store.set('$page.showForm', true);
-    }
-
-    onAdd () {
-        this.store.set('$page.showForm', true);
-        this.store.set('$page.id', null);
+    onGenerate () {
         var players = this.store.get('players');
-        this.store.set('$page.form', {});
+        let schedule = bergerTable(players).reduce((acc, round) => [...acc, ...round]);
+        this.store.set('schedule', schedule);
     }
+
+
 
     onSave() {
         this.store.set('$page.showForm', false);

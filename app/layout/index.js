@@ -35,15 +35,14 @@ export default <cx>
                <Link href="~/" url:bind="url">
                   Home
                </Link>
-            </dd>
-            <dd>
                <Link href="~/dashboard" url:bind="url">
                   Dashboard
                </Link>
-            </dd>
-            <dd>
                <Link href="~/players" url:bind="url">
                   Igrači
+               </Link>
+               <Link href="~/raspored" url:bind="url">
+                  Raspored
                </Link>
             </dd>
          </dl>

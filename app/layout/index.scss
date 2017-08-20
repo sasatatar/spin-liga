@@ -111,3 +111,17 @@ p {
 .layout.nav {
 
 }
+
+.cxs-header-plain {
+    .cxe-grid-col-header {
+        border-style: solid;
+        position: relative;
+        font-size: 12px;
+        line-height: 25px;
+        color: #9b9b9b;
+        background-color: #fff;
+        border-color: transparent transparent #e0e0e0;
+        background-clip: padding-box;
+        padding: 12px 20px 11px;
+    }
+}   

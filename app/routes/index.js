@@ -7,6 +7,7 @@ import Default from './default';
 import Players from './players';
 import Dashboard from './dashboard';
 import UserRoutes from './users';
+import Schedule from './schedule';
 
 
 
@@ -22,6 +23,9 @@ export default <cx>
         </Route>
         <Route route="~/players" url:bind="url">
             <Players/>
+        </Route>
+        <Route route="~/raspored" url:bind="url">
+            <Schedule/>
         </Route>
        <Route route="~/dashboard" url:bind="url">
           <Dashboard/>
