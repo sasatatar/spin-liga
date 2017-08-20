@@ -1,4 +1,4 @@
-import { HtmlElement, Link, Section, Grid, TextField, Window, Button, NumberField, FlexCol, FlexRow, ValidationGroup, DateField, Radio, LabeledContainer } from 'cx/widgets';
+import { HtmlElement, Link, Section, Grid, TextField, Button, FlexCol, FlexRow } from 'cx/widgets';
 import { bind, expr, KeySelection, LabelsLeftLayout } from 'cx/ui';
 import Controller from './Controller';
 export default <cx>
@@ -6,24 +6,26 @@ export default <cx>
         Raspored
     </h2>
     <FlexCol controller={Controller} spacing="large">
-        <Section mod="card" >
+        <Section mod="card">
             <FlexRow spacing='large'>
                 <Button onClick="onGenerate">Generiši raspored</Button>
+                <TextField placeholder="Ime igrača" icon="search" value={bind('$page.filter')} showClear />
             </FlexRow>
         </Section>
-        <Section mod="well" title="Raspored" hLevel={4}>
-            <Grid records={bind("schedule")}
+        <Section mod="well" title="Raspored" hLevel={4} style="max-width: 600px;">
+            <Grid records={bind("$page.schedule")}
                 border
                 columns={[
-                    { header: 'Igrač A', field: 'teamA.name', sortable: false},
-                    { header: 'Igrač B', field: 'teamB.name', sortable: false},
-                    { header: 'Rezultat', field: 'game', sortable: false},
+                    { header: 'Meč', field: 'game', sortable: true},
+                    { header: 'Igrač A', field: 'teamA.name', align: 'left', sortable: true},
+                    { header: 'Rezultat', align: 'center'},
+                    { header: 'Igrač B', field: 'teamB.name', align: 'right', sortable: true},
                 ]} 
                 grouping={[{
                    key: {
                       name: { bind: '$record.round' }
                    },
-                   caption: { expr: '"Kolo " + {$group.name}' }
+                   caption: { expr: '{$group.name} + ". Kolo"' }
                 }]}/>
         </Section>
     </FlexCol>

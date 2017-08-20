@@ -1,4 +1,5 @@
 import { Controller } from 'cx/ui';
+import { Grid } from 'cx/widgets';
 import uuid from 'uuid';
 import bergerTable from 'berger-table-generator';
 
@@ -8,13 +9,15 @@ export default class extends Controller {
     onInit() {
         this.store.init('players', players);
 
-        this.addComputable('$page.schedule', ['schedule'], schedule => {
-            return (schedule || []).map(game => ({
-                ...game,
-                teamA: game.teamA.name,
-                teamB: game.teamB.name
-            }));
-        })
+        this.addComputable('$page.schedule', ['schedule', '$page.filter'], (schedule, query) => {
+            return (schedule || []).filter(game => {
+                if (!query)
+                    return true;
+                query = query.toLowerCase();
+                return (game.teamA.name || '').toLowerCase().includes(query) ||
+                    (game.teamB.name || '').toLowerCase().includes(query)
+            });
+        });
 
     }
 
@@ -23,6 +26,7 @@ export default class extends Controller {
         let schedule = bergerTable(players).reduce((acc, round) => [...acc, ...round]);
         this.store.set('schedule', schedule);
     }
+
 
 
 
