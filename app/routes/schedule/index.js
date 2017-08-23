@@ -12,9 +12,11 @@ export default <cx>
                 <TextField placeholder="Ime igrača" icon="search" value={bind('$page.filter')} showClear />
             </FlexRow>
         </Section>
-        <Section mod="well" title="Raspored" hLevel={4} style="max-width: 600px;">
-            <Grid records={bind("$page.schedule")}
+        <Section mod="well" title="Raspored" hLevel={4} style="max-width: 600px; flex: 1;">
+            <Grid style="height: 600px;"
+                records={bind("$page.schedule")}
                 border
+                scrollable
                 columns={[
                     { header: 'Meč', field: 'game', sortable: true},
                     { header: 'Igrač A', field: 'teamA.name', align: 'left', sortable: true},
