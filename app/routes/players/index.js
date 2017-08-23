@@ -8,8 +8,8 @@ export default <cx>
     <FlexCol controller={Controller} spacing="large">
         <Section mod="card" >
             <FlexRow spacing='large'>
-                <Button disabled={expr('!{$page.id}')} onClick="onEdit">Izmijeni</Button>
-                <Button onClick="onAdd">Dodaj</Button>
+                <Button mod="hollow" icon="edit" disabled={expr('!{$page.id}')} onClick="onEdit">Izmijeni</Button>
+                <Button mod="hollow" icon="add" onClick="onAdd">Dodaj</Button>
             </FlexRow>
         </Section>
         <Section mod="well" title="Igrači" hLevel={4}>
@@ -24,16 +24,22 @@ export default <cx>
                     { header: 'Ljevak ili dešnjak', field: 'hand', sortable: true }
                 ]} />
         </Section>
-        <Window visible={bind('$page.showForm', false)} title={expr("{$page.id} ? 'Izmijeni igrača' : 'Novi igrač'")} center class="cxs-animated">
-            <div layout={LabelsLeftLayout} style="padding: 20px;">
+        <Window visible={bind('$page.showForm', false)} title={expr("{$page.id} ? 'Izmijeni igrača' : 'Novi igrač'")} center >
+            <div style="padding: 20px; margin-top: -30px;" >
                 <TextField label="Ime i prezime" value={bind("$page.form.name")} />
+                <br/>
                 <DateField label="Datum rođenja" value={bind("$page.form.born")} showClear={false} />
+                <br/>
                 <NumberField label="Visina" value={bind("$page.form.height")} format="suffix; cm"/>
+                <br/>
                 <NumberField label="Tjelesna masa" value={bind("$page.form.weight")} format="suffix; kg" />               
-                <LabeledContainer label="Igra">
-                    <Radio value={bind("$page.form.hand")} option="left" text="lijevom"/>
-                    <Radio value={bind("$page.form.hand")} option="right" text="desnom rukom"/>
-                </LabeledContainer>
+                <br/>
+                <div ws>
+                <br/>
+                Igra 
+                <Radio value={bind("$page.form.hand")} option="left" text="lijevom" />
+                <Radio value={bind("$page.form.hand")} option="right" text="desnom rukom"/>
+                </div>
             </div>            
             <div putInto="footer" style="float: right;">
                 <Button onClick="onSave">Save</Button>

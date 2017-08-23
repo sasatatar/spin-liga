@@ -4,6 +4,10 @@ import { Timing, Debug } from 'cx/util';
 
 import {enableAllInternalDependencies} from 'cx/widgets';
 import {Culture} from 'cx/ui';
+import { enableMaterialLabelPlacement, enableMaterialHelpPlacement } from "cx-theme-material";
+
+enableMaterialLabelPlacement();
+enableMaterialHelpPlacement();
 
 Culture.setCulture('sr-Latn-RS');
 enableAllInternalDependencies();
