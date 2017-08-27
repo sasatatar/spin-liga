@@ -17,3 +17,12 @@ export function loadPlayers(q) {
        setTimeout(() => resolve(result), 100);
     });
  }
+
+ let playerMap = {};
+
+ players.forEach(p => playerMap[p.id] = p);
+
+ export function getPlayer(id) {
+     return playerMap[id] ? playerMap[id] : null;
+ }
+

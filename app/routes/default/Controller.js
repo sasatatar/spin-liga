@@ -1,33 +1,19 @@
 import { Controller } from 'cx/ui';
+import {getPlayer} from '../../api';
 
 export default class extends Controller {
     onInit() {
-       this.store.init('bars', [
-          {
-             "day": "Mo",
-             "value": 500,
-             "colorIndex": 12
-          },
-          {
-             "day": "Tu",
-             "value": 900,
-             "colorIndex": 9
-          },
-          {
-             "day": "We",
-             "value": 850,
-             "colorIndex": 10
-          },
-          {
-             "day": "Th",
-             "value": 950,
-             "colorIndex": 9
-          },
-          {
-             "day": "Fr",
-             "value": 1000,
-             "colorIndex": 8
-          }
-       ]);
+        let players = this.store.get('players');
+
+        this.addTrigger('ranking', ['schedule'], schedule => {
+            let ranking = schedule.reduce((acc, game) => {
+                let teamA = getPlayer(game.teamA);
+                let teamB = getPlayer(game.teamB);
+                if (!acc[teamA.id])
+                    acc[teamA.id] = {
+                        name: teamA.name
+                    }
+            }, {})
+        })
     }
 }
