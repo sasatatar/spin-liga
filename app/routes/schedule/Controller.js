@@ -58,12 +58,27 @@ export default class extends Controller {
             else if (set.teamA < set.teamB) acc.teamB++;
             return acc;
         }, {teamA: 0, teamB: 0})
+        
+        if (result.teamA + result.teamB === 0)
+            result = { teamA: '', teamB: '' };
 
         this.store.update('schedule', games => games.map(g => 
             g.id === game.id 
                 ? {...g, sets, result} 
                 : g
             ));
+    }
+
+    onResetResult() {
+        this.store.update('$page.game', game => {
+            return {
+                ...game, 
+                sets: Array.from({length: 5}).map((_, i) => ({ set: i+1, teamA: null, teamB: null })),
+                result: { teamA: '', teamB: '' }
+            }
+        });
+
+        this.onSaveResult();
     }
 
     onGenerateResults() {

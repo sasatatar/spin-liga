@@ -55,6 +55,7 @@ export default <cx>
                     </Repeater>
                 </FlexCol>
                 <div putInto="footer" style="float: right;">
+                    <Button mod="hollow" text="Reset" onClick="onResetResult" />                
                     <Button mod="primary" text="Snimi" onClick="onSaveResult" />
                 </div>
             </Section>
