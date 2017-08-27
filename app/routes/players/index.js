@@ -7,13 +7,14 @@ export default <cx>
     </h2>
     <FlexCol controller={Controller} spacing="large">
         <Section mod="card" >
-            <FlexRow spacing='large'>
+            <FlexRow >
+                <TextField placeholder="Ime igrača" icon="search" value={bind('$page.filter')} showClear />
                 <Button mod="hollow" icon="edit" disabled={expr('!{$page.id}')} onClick="onEdit">Izmijeni</Button>
                 <Button mod="hollow" icon="add" onClick="onAdd">Dodaj</Button>
             </FlexRow>
         </Section>
         <Section mod="well" title="Igrači" hLevel={4}>
-            <Grid records={bind("players")}
+            <Grid records={bind("$page.players")}
                 border
                 selection={{ type: KeySelection, bind: "$page.id" }}
                 columns={[

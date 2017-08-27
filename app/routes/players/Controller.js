@@ -11,6 +11,16 @@ export default class extends Controller {
             this.store.set('$page.form', records.find(a => a.id == id));
         });
 
+        this.addComputable('$page.players', ['players', '$page.filter'], (players, query) => {
+            return query 
+                ? players
+                    .filter(player => {
+                        query = query.toLowerCase();
+                        return (player.name || '').toLowerCase().includes(query)
+                    })
+                : players;
+        })
+
     }
 
     onEdit(e) {

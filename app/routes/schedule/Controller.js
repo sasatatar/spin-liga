@@ -7,34 +7,65 @@ import { players } from '../../data/players';
 
 export default class extends Controller {
     onInit() {
-        this.store.init('players', players);
+        let players = this.store.get('players');
 
         this.addComputable('$page.schedule', ['schedule', '$page.filter'], (schedule, query) => {
-            return (schedule || []).filter(game => {
-                if (!query)
-                    return true;
-                query = query.toLowerCase();
-                return (game.teamA.name || '').toLowerCase().includes(query) ||
-                    (game.teamB.name || '').toLowerCase().includes(query)
-            });
+            schedule = (schedule || [])
+                .map(game => {
+                    game = {...game}
+                    game.teamA = players.find(p => p.id === game.teamA);
+                    game.teamB = players.find(p => p.id === game.teamB);
+                    game.result = `${game.result.teamA} - ${game.result.teamB}`
+                    return game;
+                })
+            query = query ? query.toLowerCase() : null;
+            return query 
+                ? schedule
+                    .filter(game => {
+                        return (game.teamA.name || '').toLowerCase().includes(query) ||
+                            (game.teamB.name || '').toLowerCase().includes(query)
+                    })
+                : schedule;
         });
 
+        this.addTrigger('game', ['$page.gameId'], (gameId) => {
+            let schedule = this.store.get('$page.schedule');
+            let game = schedule.find(g => g.id === gameId);
+            this.store.set('$page.game', { ...game });
+        })
     }
 
     onGenerate () {
         var players = this.store.get('players');
-        let schedule = bergerTable(players).reduce((acc, round) => [...acc, ...round]);
+        let ids = players.map(p => p.id);
+        let schedule = bergerTable(ids)
+            .reduce((acc, round) => [...acc, ...round]) // splat data
+            .map(game => ({ 
+                    ...game, 
+                    id: uuid(), 
+                    sets: Array.from({length: 5}).map((_, i) => ({ set: i+1, teamA: null, teamB: null })),
+                    result: { teamA: '', teamB: '' }
+                }));
         this.store.set('schedule', schedule);
+        this.store.delete('$page.gameId');
     }
 
 
 
 
-    onSave() {
-        this.store.set('$page.showForm', false);
-        let player = this.store.get('$page.form');
-        this.store.update('players', players => players.find(e => e.id === player.id) 
-                                                ? players.map(p => p.id === player.id ? player : p) 
-                                                : [...players, {...player, id: uuid()}]);
+    onSaveResult() {
+        let game = this.store.get('$page.game');
+        let {sets} = game;
+        let result = sets.reduce((acc, set) => {
+            if (set.teamA > set.teamB) acc.teamA++;
+            else if (set.teamA < set.teamB) acc.teamB++;
+            return acc;
+        }, {teamA: 0, teamB: 0})
+
+        this.store.update('schedule', games => games.map(g => 
+            g.id === game.id 
+                ? {...g, sets, result} 
+                : g
+            ));
     }
 }
