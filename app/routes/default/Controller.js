@@ -5,7 +5,7 @@ import {getPlayer} from '../../api';
 function getRanking(map, key) {
     if (!map[key])
         map[key] = {
-            // this does not return the updated player info, considor creating a player hash map as a computable
+            // this does not return the updated player info, consider creating a player hash map as a computable
             // or rely on the firebase to propagate the change
             name: getPlayer(key).name, 
             wins: 0,
