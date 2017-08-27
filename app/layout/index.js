@@ -33,10 +33,7 @@ export default <cx>
             </dt>
             <dd>
                <Link href="~/" url:bind="url">
-                  Home
-               </Link>
-               <Link href="~/dashboard" url:bind="url">
-                  Dashboard
+                  Početak
                </Link>
                <Link href="~/igraci" url:bind="url">
                   Igrači
