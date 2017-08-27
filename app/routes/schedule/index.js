@@ -22,7 +22,7 @@ export default <cx>
         </Section>
         <FlexRow spacing="large" wrap>
             <Section mod="card" title="Raspored" hLevel={4} style="max-width: 600px; flex: 1;">
-                <Grid style="height: 600px;"
+                <Grid style="height: 500px;"
                     records={bind("$page.schedule")}
                     border
                     scrollable
