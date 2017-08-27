@@ -3,7 +3,7 @@ import { Grid } from 'cx/widgets';
 import uuid from 'uuid';
 import bergerTable from 'berger-table-generator';
 
-import { players } from '../../data/players';
+import { players } from '../../api/players';
 
 export default class extends Controller {
     onInit() {
@@ -50,9 +50,6 @@ export default class extends Controller {
         this.store.delete('$page.gameId');
     }
 
-
-
-
     onSaveResult() {
         let game = this.store.get('$page.game');
         let {sets} = game;
@@ -67,5 +64,26 @@ export default class extends Controller {
                 ? {...g, sets, result} 
                 : g
             ));
+    }
+
+    onGenerateResults() {
+        this.store.update('schedule', games => {
+            return games.map(game => {
+                let result = { teamA: 0, teamB: 0 };
+                let sets = Array.from({length: 5}).map((_, i) => {
+                    if (result.teamA === 3 || result.teamB === 3)
+                        return { set: i+1, teamA: null, teamB: null };
+                    let winnerA = Math.random() >= 0.5;
+                    let set = winnerA
+                        ? { set: i+1, teamA: 11, teamB: Math.round(Math.random() * 9) } 
+                        : { set: i+1, teamB: 11, teamA: Math.round(Math.random() * 9) }
+                    if (winnerA)
+                        result.teamA++
+                    else result.teamB++;
+                    return set;
+                })
+                return {...game, sets, result};
+            })
+        })
     }
 }

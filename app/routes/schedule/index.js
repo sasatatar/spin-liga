@@ -7,17 +7,20 @@ export default <cx>
     </h2>
     <FlexCol controller={Controller} spacing="large">
         <Section mod="card">
-            <FlexRow>
-                <TextField placeholder="Ime igrača" icon="search" value={bind('$page.filter')} showClear />
+            <FlexRow wrap>
+                <TextField placeholder="Ime igrača" 
+                    icon="search" 
+                    value={bind('$page.filter')} 
+                    showClear
+                    inputStyle="border-color: transparent; box-shadow: none; font-size: 16px"/>
                 <Button mod="hollow" 
-                    onClick="onEnterResult" 
+                    onClick="onGenerateResults" 
                     icon="add"
-                    disabled={expr("!{$page.game}")}
-                    text="Unesi rezultat" />
+                    text="Generiši rezultate" />
                 <Button mod="hollow" onClick="onGenerate" icon="assignment">Generiši raspored</Button>
             </FlexRow>
         </Section>
-        <FlexRow spacing="large">
+        <FlexRow spacing="large" wrap>
             <Section mod="card" title="Raspored" hLevel={4} style="max-width: 600px; flex: 1;">
                 <Grid style="height: 600px;"
                     records={bind("$page.schedule")}
@@ -43,15 +46,17 @@ export default <cx>
                 <br/>
                 <FlexCol align="center" >
                     <Repeater records={bind('$page.game.sets')} >
-                        <div layout={LabelsLeftLayout} ws>
+                        <div layout={LabelsLeftLayout} ws class="cxb-result-input">
                             <LabeledContainer label={tpl("{$record.set}. set")}>
-                                <NumberField value={bind("$record.teamA")} style="width: 60px;"/> - 
-                                <NumberField inputStyle="text-align: right;" value={bind("$record.teamB")} style="width: 60px" />
+                                <NumberField placeholder="igrač A" inputStyle="text-align: right;" value={bind("$record.teamA")} style="width: 80px;"/> -  
+                                <NumberField placeholder="igrač B" value={bind("$record.teamB")} style="width: 80px; margin-left: 5px;" />
                             </LabeledContainer>
                         </div>
                     </Repeater>
                 </FlexCol>
-                <Button mod="primary" putInto="footer" text="Snimi" onClick="onSaveResult" />
+                <div putInto="footer" style="float: right;">
+                    <Button mod="primary" text="Snimi" onClick="onSaveResult" />
+                </div>
             </Section>
         </FlexRow>
     </FlexCol>

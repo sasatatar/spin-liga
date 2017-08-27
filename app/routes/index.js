@@ -21,7 +21,7 @@ export default <cx>
         <Route route="~/" url:bind="url">
             <Default/>
         </Route>
-        <Route route="~/players" url:bind="url">
+        <Route route="~/igraci" url:bind="url">
             <Players/>
         </Route>
         <Route route="~/raspored" url:bind="url">

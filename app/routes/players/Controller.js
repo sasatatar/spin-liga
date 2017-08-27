@@ -1,12 +1,7 @@
 import { Controller } from 'cx/ui';
 import uuid from 'uuid';
-
-import { players } from '../../data/players';
-
 export default class extends Controller {
     onInit() {
-        this.store.init('players', players);
-
         this.addTrigger('$page.form', ['$page.id', 'players'], (id, records) => {
             this.store.set('$page.form', records.find(a => a.id == id));
         });
@@ -20,7 +15,6 @@ export default class extends Controller {
                     })
                 : players;
         })
-
     }
 
     onEdit(e) {

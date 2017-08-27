@@ -38,7 +38,7 @@ export default <cx>
                <Link href="~/dashboard" url:bind="url">
                   Dashboard
                </Link>
-               <Link href="~/players" url:bind="url">
+               <Link href="~/igraci" url:bind="url">
                   Igrači
                </Link>
                <Link href="~/raspored" url:bind="url">

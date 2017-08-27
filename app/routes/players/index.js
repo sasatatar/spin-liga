@@ -1,5 +1,9 @@
 import { HtmlElement, Link, Section, Grid, TextField, Window, Button, NumberField, FlexCol, FlexRow, ValidationGroup, DateField, Radio, LabeledContainer } from 'cx/widgets';
 import { bind, expr, KeySelection, LabelsLeftLayout } from 'cx/ui';
+import { enableMaterialLabelPlacement } from 'cx-theme-material';
+
+enableMaterialLabelPlacement();
+
 import Controller from './Controller';
 export default <cx>
     <h2 putInto="header">
@@ -8,7 +12,11 @@ export default <cx>
     <FlexCol controller={Controller} spacing="large">
         <Section mod="card" >
             <FlexRow >
-                <TextField placeholder="Ime igrača" icon="search" value={bind('$page.filter')} showClear />
+                <TextField placeholder="Ime igrača" 
+                    icon="search" 
+                    value={bind('$page.filter')} 
+                    showClear
+                    inputStyle="border-color: transparent; box-shadow: none; font-size: 16px" />
                 <Button mod="hollow" icon="edit" disabled={expr('!{$page.id}')} onClick="onEdit">Izmijeni</Button>
                 <Button mod="hollow" icon="add" onClick="onAdd">Dodaj</Button>
             </FlexRow>
