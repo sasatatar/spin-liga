@@ -11,7 +11,7 @@ export default () => <cx>
 			</p>
 			<p>
 				<a href="#" onClick="signInWithGoogle">
-                    <img src="/assets/sign-in/google/btn_google_signin_dark_normal_web.png" />
+                    <img src="~/assets/sign-in/google/btn_google_signin_dark_normal_web.png" />
 				</a>
 			</p>
 		</Section>
