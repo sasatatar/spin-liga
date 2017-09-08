@@ -2,7 +2,7 @@
 let stateKey = 'cx-spin-liga';
 
 export class UIState {
-    static init(userId) {
+    static init(userId="default") {
         stateKey = `cx-spin-liga/user/${userId}`;
     }
 

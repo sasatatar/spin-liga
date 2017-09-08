@@ -3,6 +3,34 @@ $cx-include-global-rules: true;
 @import "~cx-theme-material/src/variables";
 @import "~cx-theme-material/src/index";
 
+$warning-back-color: #FFF8E1;
+$warning-accent-color: #FB8C00;
+$error-back-color: #FFEBEE;
+$error-accent-color: red;
+$info-back-color: white;
+$info-accent-color: #2196F3;
+
 @import "components/index";
 @import "layout/index";
 @import "routes/index";
+@import "mods";
+
+
+.flex-1 {
+	flex: 1;
+}
+
+.autogrow {
+  display: block;
+  width: auto;  
+}
+
+.form {
+	h4 {
+		margin: 28px 0 6px 0;
+	}
+}
+
+.form-buttons {
+	margin: 30px 0 20px 0;
+}

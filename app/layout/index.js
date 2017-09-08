@@ -1,6 +1,31 @@
-import {HtmlElement, Link, Button} from 'cx/widgets';
-import {ContentPlaceholder} from 'cx/ui';
+import {HtmlElement, Link, Button, Repeater} from 'cx/widgets';
+import {ContentPlaceholder, bind, expr} from 'cx/ui';
 import Controller from "./Controller";
+import UserAccount from './UserAccount';
+
+const items = [{
+    text: 'Home',
+    url: '~/'
+},{
+    text: 'About',
+    url: '~/about'
+}, {
+    text: 'Home',
+    url: '~/leagues',
+    items: [{ 
+        text: 'Igrači',
+        url: '+/players',
+    },{
+        text: 'Rezultati',
+        url: '+/games'
+    }, {
+        text: 'Rang lista',
+        url: '+/ranking'
+    }]
+}, {
+    text: 'Admin',
+    url: '~/sign-in'
+}]
 
 export default <cx>
    <div
@@ -24,35 +49,24 @@ export default <cx>
             }}
          />
          <ContentPlaceholder name="header"/>
+         <div style="flex: 1;" />
+         <UserAccount />
       </header>
       <aside class="aside">
          <h1>Spin liga</h1>
          <dl>
-            <dt>
-               App
-            </dt>
-            <dd>
-               <Link href="~/" url:bind="url">
-                  Početak
-               </Link>
-               <Link href="~/igraci" url:bind="url">
-                  Igrači
-               </Link>
-               <Link href="~/raspored" url:bind="url">
-                  Raspored
-               </Link>
-            </dd>
-         </dl>
-         <dl>
-            <dt>
-               Admin
-            </dt>
-            <dd>
-               <Link href="~/users" url:bind="url" match="prefix">
-                  Users
-               </Link>
-            </dd>
-         </dl>
+            <Repeater records={items}>
+                <dt>
+                    <Text if={expr("!{$record.url}")} bind="$record.text" />                        
+                    <Link if={expr("!!{$record.url}")} href={bind("$record.url")} text={bind("$record.text")} url={bind("url")} />
+                </dt>
+                <Repeater records={bind("$record.items")} if={expr('!!{league.id}')}>
+                    <dd>
+                        <Link href={bind("$record.url")} match="prefix" text={bind("$record.text")} url={bind("url")} />
+                    </dd>
+                </Repeater>                        
+            </Repeater>
+        </dl>
       </aside>
    </div>
 </cx>

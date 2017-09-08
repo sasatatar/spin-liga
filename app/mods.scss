@@ -1,0 +1,18 @@
+.cxb-toast {
+	padding: 20px;
+
+	&.cxm-warning {
+		background: $warning-back-color;
+		border-left: 3px solid $warning-accent-color;
+	}
+
+	&.cxm-error {
+		background: $error-back-color;
+		border-left: 3px solid $error-accent-color;
+	}
+
+	&.cxm-info {
+		background: $info-back-color;
+		border-left: 3px solid $info-accent-color;
+	}
+}
