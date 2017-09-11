@@ -1,0 +1,33 @@
+.cxb-loading-overlay-container {
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.cxe-loading-overlay {
+   background: rgba(255, 255, 255, 0.5);
+   position: absolute;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   animation: fadein 0.3s;
+
+   .cxe-loading-indicator {
+      position: relative;
+      top: calc(50% - 25px);
+      width: 100px;
+      margin: 0 auto;
+      text-align: center;
+      display: block;
+   }
+}
+
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+
+

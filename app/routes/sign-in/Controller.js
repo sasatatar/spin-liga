@@ -1,7 +1,7 @@
 import { Controller } from 'cx/ui';
 import { Toast } from 'cx/widgets';
 
-import {firebase, auth} from '../../api';
+import {firebase, auth, database } from '../../api';
 
 export default class extends Controller {
 	onInit() {
@@ -21,14 +21,7 @@ export default class extends Controller {
 	}
 
 	signInWithProvider(provider) {
-		auth.signInWithPopup(provider).then(({user}) => {
-			this.store.set('$root.user', {
-				email: user.email,
-				id: user.uid,
-				displayName: user.displayName,
-				photoURL: user.photoURL
-			});
-		}).catch((error) => {
+	 	auth.signInWithPopup(provider).catch((error) => {
 			let errorCode = error.code;
 			let errorMessage = error.message;
 			let toast = Toast.create({

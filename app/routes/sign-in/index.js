@@ -4,10 +4,11 @@ import { expr } from 'cx/ui';
 import Controller from './Controller';
 
 export default () => <cx>
+ 	<h2 putInto="header">Sign in</h2>
 	<div class="center" controller={Controller} >
 		<Section title="Sign In" visible={expr("!{user.id}")}>
 			<p>
-				Please sign in using one of the available authentication providers.
+				Ulogujte se za pristup administrativnom panelu.
 			</p>
 			<p>
 				<a href="#" onClick="signInWithGoogle">
@@ -18,7 +19,7 @@ export default () => <cx>
 
 		<Section title="User Info" visible={expr("!!{user.id}")} ws>
 			<p ws>
-				You're signed in as <Text tpl="{user.displayName}{user.email:wrap; (;)}" />.
+				Ulogovani ste kao <Text tpl="{user.displayName}{user.email:wrap; (;)}" />.
 			</p>
 
 			<Button onClick="signOut" mod="hollow">

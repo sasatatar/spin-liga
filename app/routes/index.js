@@ -1,9 +1,9 @@
-import { Route, PureContainer, Section, Sandbox } from 'cx/widgets';
+import { Route, PureContainer, Section, Sandbox, RedirectRoute } from 'cx/widgets';
 import { FirstVisibleChildLayout, bind } from 'cx/ui'
 
 import AppLayout from '../layout';
 
-import Default from './default';
+import Leagues from './leagues';
 import Players from './players';
 import Schedule from './schedule';
 import SignIn from './sign-in';
@@ -19,9 +19,7 @@ export default <cx>
             outerLayout={AppLayout}
             layout={FirstVisibleChildLayout}
         >
-                <Route route="~/" url={bind("url")}>
-                    <Default/>
-                </Route>
+                
                 {/*
                 <Route route="+/players" url={bind("url")} prefix>
                     <Players/>
@@ -36,6 +34,10 @@ export default <cx>
                 <Route route="~/sign-in" url={bind("url")}>
                     <SignIn />
                 </Route>
+                <Route route="~/" url={bind("url")} prefix>
+                    <Leagues />
+                </Route>
+                
             <Section title="Page Not Found" mod="card">
                 This page doesn't exists. Please check your URL.
             </Section>

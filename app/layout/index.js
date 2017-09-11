@@ -3,13 +3,7 @@ import {ContentPlaceholder, bind, expr} from 'cx/ui';
 import Controller from "./Controller";
 import UserAccount from './UserAccount';
 
-const items = [{
-    text: 'Home',
-    url: '~/'
-},{
-    text: 'About',
-    url: '~/about'
-}, {
+const items = [, {
     text: 'Home',
     url: '~/leagues',
     items: [{ 
@@ -22,6 +16,9 @@ const items = [{
         text: 'Rang lista',
         url: '+/ranking'
     }]
+},{
+    text: 'About',
+    url: '~/about'
 }, {
     text: 'Admin',
     url: '~/sign-in'
@@ -58,7 +55,7 @@ export default <cx>
             <Repeater records={items}>
                 <dt>
                     <Text if={expr("!{$record.url}")} bind="$record.text" />                        
-                    <Link if={expr("!!{$record.url}")} href={bind("$record.url")} text={bind("$record.text")} url={bind("url")} />
+                    <Link if={expr("!!{$record.url}")} href={bind("$record.url")} text={bind("$record.text")} url={bind("url")} match="prefix" />
                 </dt>
                 <Repeater records={bind("$record.items")} if={expr('!!{league.id}')}>
                     <dd>
