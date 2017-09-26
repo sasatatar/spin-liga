@@ -4,34 +4,40 @@ import { FirstVisibleChildLayout, bind } from 'cx/ui'
 import AppLayout from '../layout';
 
 import SignIn from './sign-in';
-import About from './about';
+import Admin from './admin';
 
 
 
 export default <cx>
     <PureContainer layout={FirstVisibleChildLayout} >
+        
+
+        
         <Sandbox
             key={bind("url")}
             storage={bind("pages")}
             outerLayout={AppLayout}
             layout={FirstVisibleChildLayout}
         >
-                
-                {/*
-                <Route route="+/players" url={bind("url")} prefix>
-                    <Players/>
-                </Route>
-                <Route route="+/games" url={bind("url")} prefix>
-                    <Schedule/>
-                </Route>
-                */}
-                <Route route="~/about" url={bind("url")}>
-                    <About />
-                </Route>
-                <Route route="~/sign-in" url={bind("url")}>
-                    <SignIn />
-                </Route>
-                
+
+            {/*public routes*/}
+            <Route route="~/sign-in" url={bind("url")}>
+                <SignIn />
+            </Route>
+            
+            {/*
+            <Route route="+/players" url={bind("url")} prefix>
+                <Players/>
+            </Route>
+            <Route route="+/games" url={bind("url")} prefix>
+                <Schedule/>
+            </Route>
+            */}
+            {/*restricted access to admins only*/}
+            <PureContainer  >
+                <Admin />
+            </PureContainer>
+            
             <Section title="Page Not Found" mod="card">
                 This page doesn't exists. Please check your URL.
             </Section>

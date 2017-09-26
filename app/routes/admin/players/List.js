@@ -33,12 +33,12 @@ const mw = 768;
 
 export default <cx>
     <PureContainer controller={Controller}>
-       <h2 putInto="header">Leagues</h2>    
+       <h2 putInto="header">Call Groups</h2>    
         <FlexCol>
             <Section mod="card">
                 <FlexRow spacing>
                     <TextField 
-                        value={{bind: "$page.filter"}}
+                        value={{bind: "$page.filter.query", debounce: 300 }}
                         placeholder="Search..."
                         style="flex: 1 0 0"
                         inputStyle="border-color: transparent; box-shadow: none; font-size: 16px"
@@ -64,7 +64,7 @@ export default <cx>
                 <LoadingOverlay loading:bind="$page.loading" >
                     <Grid
                         emptyText="Nothing to show."
-                        records:bind="$page.filteredData"
+                        records:bind="$page.data"
                         style="flex: 1"
                         class="flex-1 momentum-scroll"
                         scrollable
@@ -82,6 +82,20 @@ export default <cx>
                                 field: "name",
                                 sortable: true,
                                 header: "Name"
+                            },
+                            {
+                                header: "Max. Members",
+                                sortable: true,
+                                field: "maxMembers"                          
+                            },
+                            {
+                                header: "Current Members",
+                                field: "currentMembers"
+                            },
+                            {
+                                header: "Recording",
+                                field: "config.recording",
+                                items: <cx><Checkbox value:expr="{$record.config.recording}" disabled /></cx>
                             }
                           ]
                         }

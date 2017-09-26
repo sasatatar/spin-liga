@@ -6,7 +6,7 @@ import Controller from './Controller';
 export default () => <cx>
  	<h2 putInto="header">Sign in</h2>
 	<div class="center" controller={Controller} >
-		<Section title="Sign In" visible={expr("!{user.id}")}>
+		<Section title="Sign In" visible={expr("!{user.uid}")}>
 			<p>
 				Ulogujte se za pristup administrativnom panelu.
 			</p>
@@ -17,7 +17,7 @@ export default () => <cx>
 			</p>
 		</Section>
 
-		<Section title="User Info" visible={expr("!!{user.id}")} ws>
+		<Section title="User Info" visible={expr("!!{user.uid}")} ws>
 			<p ws>
 				Ulogovani ste kao <Text tpl="{user.displayName}{user.email:wrap; (;)}" />.
 			</p>

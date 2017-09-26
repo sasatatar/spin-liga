@@ -1,38 +1,55 @@
-import { Controller } from 'cx/ui';
-import uuid from 'uuid';
+import { Controller, History } from 'cx/ui';
+import { 
+    queryCallgroups
+} from 'app/api';
+
 export default class extends Controller {
     onInit() {
-        this.addTrigger('$page.form', ['$page.id', 'players'], (id, records) => {
-            this.store.set('$page.form', records.find(a => a.id == id));
+        this.addTrigger('load', [], ::this.load, true);
+
+        this.store.init('$page.page', 1);
+        this.store.init('$page.take', 50);
+        this.store.init('$page.filter', { query: null });
+
+        this.addTrigger('page', ['$page.take', '$page.sortField', '$page.sortDirection', '$page.filter'], () => {
+            this.store.set('$page.page', 1);
+        }, true);
+
+        this.addTrigger('pagination', ['$page.take', '$page.page', '$page.sortField', '$page.sortDirection', '$page.filter'], () => { 
+            this.load(); 
         });
 
-        this.addComputable('$page.players', ['players', '$page.filter'], (players, query) => {
-            return query 
-                ? players
-                    .filter(player => {
-                        query = query.toLowerCase();
-                        return (player.name || '').toLowerCase().includes(query)
-                    })
-                : players;
+    }
+
+    load() {
+        let page = this.store.get('$page.page'),
+            take = this.store.get('$page.take'),
+            sortField = this.store.get('$page.sortField'),
+            sortDirection = this.store.get('$page.sortDirection'),
+            filter = this.store.get('$page.filter.query');
+        
+        this.store.set('$page.loading', true);
+        queryCallgroups({
+            q: filter,
+            page: page,
+            take: take,
+            sortField: sortField,
+            sortDirection: sortDirection
         })
+        .catch(() => this.store.set('$page.loading', false))
+        .then(data => {
+            this.store.set('$page.data', data.slice(0, take));
+            this.store.set('$page.pageCount', data.length > take ? page + 1 : page);
+            this.store.set('$page.loading', false);
+        });
     }
 
-    onEdit(e) {
-        this.store.set('$page.showForm', true);
+    onAdd() {
+        History.pushState({}, null, '~/callgroups/new')
     }
 
-    onAdd () {
-        this.store.set('$page.showForm', true);
-        this.store.set('$page.id', null);
-        var players = this.store.get('players');
-        this.store.set('$page.form', {});
-    }
-
-    onSave() {
-        this.store.set('$page.showForm', false);
-        let player = this.store.get('$page.form');
-        this.store.update('players', players => players.find(e => e.id === player.id) 
-                                                ? players.map(p => p.id === player.id ? player : p) 
-                                                : [...players, {...player, id: uuid()}]);
+    onEdit(e, {store}) {
+        let id = store.get('$record.id') || store.get('$page.selected');
+        History.pushState({}, null, `~/callgroups/${id}`);
     }
 }

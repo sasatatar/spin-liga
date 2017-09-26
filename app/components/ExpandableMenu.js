@@ -1,5 +1,5 @@
-import { Button, Menu, HtmlElement, Submenu, Icon, ContentResolver, PureContainer } from 'cx/widgets';
-import { bind, expr } from 'cx/ui';
+import { Button, Menu, HtmlElement, Submenu, Icon, ContentResolver } from 'cx/widgets';
+import { bind, expr, createFunctionalComponent } from 'cx/ui';
 
 class MorphicMenu extends Menu {
     add(element) {
@@ -10,15 +10,15 @@ class MorphicMenu extends Menu {
         }
     }
 }
-// TODO: uncomment ...rest once it is supported by Cx
-export const ExpandableMenu = ({ expand, children, icon="dehaze" /*, ...rest*/ }) => (
+
+export const ExpandableMenu = createFunctionalComponent(({ expand, children, icon="menu", ...props }) => (
   <cx>
     <ContentResolver
         params={expand}
         onResolve={expand => {
-            if (expand) return <cx><Menu horizontal mod="expanded-menu" /*{...rest}*/>{children}</Menu></cx>;
+            if (expand) return <cx><Menu horizontal mod="expanded-menu" {...props}>{children}</Menu></cx>;
             return <cx>
-                <Menu horizontal /*{, ...rest}*/>
+                <Menu horizontal {...props}>
                     <Submenu>
                         <a><Icon name={icon}/></a>
                         <MorphicMenu putInto="dropdown">
@@ -30,4 +30,4 @@ export const ExpandableMenu = ({ expand, children, icon="dehaze" /*, ...rest*/ }
         }}
     />
   </cx>
-);
+));

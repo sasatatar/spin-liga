@@ -16,17 +16,19 @@ class AuthController extends Controller {
                 email: user.email,
                 displayName: user.displayName,
                 photoURL: user.photoURL,
-                id: user.uid,
-                isAdmin: false
+                uid: user.uid,
+                isAdmin: true
             }
         );
+
         // check if user is admin
-        database.ref('admin').once('value')
-            .then(snapshot => {
-                let isAdmin = snapshot.hasChild(user.uid);
+        if (!user) return;
+        database.ref(`/admins/${user.uid}`).once('value', snapshot => {
+                //debugger;
+                console.log('-----------------------------------', snapshot.val());
+                let isAdmin = !!snapshot.val();
                 this.store.update('user', user => ({ ...user, isAdmin }));
-            })
-            .catch(e => {});
+            });
     }
 }
 
@@ -36,7 +38,7 @@ export default <cx>
             href="~/sign-in"
             url={bind("url")}
             class="nav-user"
-            visible={expr("!!{user.id}")}
+            visible={expr("!!{user.uid}")}
         >
             <img
                 src={bind("user.photoURL")}
@@ -47,7 +49,7 @@ export default <cx>
             href="~/sign-in"
             url={bind("url")}
             mod="top"
-            visible={expr("!{user.id}")}
+            visible={expr("!{user.uid}")}
         >
             Sign In
 		</Link>

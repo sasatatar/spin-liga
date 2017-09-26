@@ -14,11 +14,13 @@ import Edit from './Edit';
 import List from './List';
 
 export default <cx>
-    <RedirectRoute route="~/callgroups" url:bind="url" redirect="~/callgroups/list" />
-    <Route route="~/callgroups/list" url:bind="url">
-        <List />
-    </Route>
-    <Route route="~/callgroups/:id" url:bind="url">
-        <Edit />
-    </Route>
+    <PureContainer layout={FirstVisibleChildLayout} >
+        <RedirectRoute route="+/leagues" url:bind="url" redirect="+/leagues/list" />
+        <Route route="+/leagues/list" url:bind="url">
+            <List />
+        </Route>
+        <Route route="+/leagues/:id" url:bind="url">
+            <Edit />
+        </Route>
+    </PureContainer>
 </cx>

@@ -1,10 +1,10 @@
 import { Controller, History } from 'cx/ui';
 
-import { getLeague, 
-    postLeague, 
-    putLeague, 
-    deleteLeague,
-    getLeagueMembers
+import { getCallgroup, 
+    postCallgroup, 
+    putCallgroup, 
+    deleteCallgroup,
+    getCallgroupMembers
 } from 'app/api';
 
 export default class extends Controller {
@@ -20,12 +20,17 @@ export default class extends Controller {
         }
         else {
             this.store.set('loading', true);
-            getLeague(id)
-                .then((data) => {
-                    this.store.set('record', data.val());
-                    this.store.set('loading', false);
-                    this.store.set('init', true);
-                });
+            Promise.all([
+                getCallgroup(id),
+                getCallgroupMembers(id)
+            ])
+            .catch(() => this.store.set('loading', false))
+            .then(([data, members]) => {
+                this.store.set('record', data);
+                this.store.set('members', members);
+                this.store.set('loading', false);
+                this.store.set('init', true);
+            });
         }
     }
 
@@ -42,9 +47,9 @@ export default class extends Controller {
         let promise;
 
         if (id == 'new') {
-            promise = postLeague(postData);
+            promise = postCallgroup(postData);
         } else {
-            promise = putLeague(id, postData);
+            promise = putCallgroup(id, postData);
         }
 
         return promise
@@ -56,7 +61,7 @@ export default class extends Controller {
     onDelete() {
         let id = this.store.get('$root.$route.id');
         if (id) {
-            return deleteLeague(id)
+            return deleteCallgroup(id)
                 .then(() => {
                     this.onCancel();
                 });
@@ -64,6 +69,6 @@ export default class extends Controller {
     }
 
     onCancel() {
-        History.pushState({}, null, "~/admin/leagues/list");
+        History.pushState({}, null, "~/callgroups/list");
     }
 }

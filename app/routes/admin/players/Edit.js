@@ -31,14 +31,14 @@ import Controller from './EditController';
 
 export default <cx>
    <Rescope bind="$page" controller={Controller}>
-        <h2 putInto="header" if:expr="{$root.$route.id} === 'new'">Add a league</h2>
-        <h2 putInto="header" if:expr="{$root.$route.id} !== 'new'">Edit league</h2>
+        <h2 putInto="header" if:expr="{$root.$route.id} === 'new'">Add a callgroup</h2>
+        <h2 putInto="header" if:expr="{$root.$route.id} !== 'new'">Edit callgroup</h2>
        
         <FlexRow target="desktop" hspacing>
             <Section
                 class="flex-1"
                 mod="card"
-                title:expr="{record.name} || 'New league'"
+                title:expr="{record.name} || 'New call group'"
             >
                 <LoadingOverlay loading:bind="loading" mod="inset">
                     <ValidationGroup invalid:bind="invalid">
@@ -49,6 +49,28 @@ export default <cx>
                                     label="Name"
                                     class="flex-1 autogrow"
                                     required
+                                />
+        
+                                <TextField
+                                    value:bind="record.config.number"
+                                    label="Number"
+                                    class="flex-1 autogrow"
+                                    required
+                                />
+                            </FlexRow>
+        
+                            <FlexRow target="tablet" hspacing="medium">
+                                <NumberField 
+                                    value:bind="record.maxMembers"
+                                    label="Max. Members"
+                                    class="flex-1 autogrow"
+                                    placeholder="Unbounded"                                
+                                />
+
+                                <Switch
+                                    value:bind="record.config.recording"
+                                    label="Recording"
+                                    //class="flex-1 autogrow"
                                 />
                             </FlexRow>
             
@@ -78,6 +100,30 @@ export default <cx>
                         </FlexCol>
                     </ValidationGroup>
                 </LoadingOverlay>
+            </Section>
+
+            <Section class="flex-1" title="Member devices">
+                <Grid records:bind="members" mod="bordered" emptyText="None."
+                    class="flex-1 momentum-scroll"
+                    style="max-height: 240px"
+                    scrollable
+                    mod="responsive"
+                    sorters:bind="sorters"
+                    columns={
+                        [{
+                            header: "Serial no.",
+                            sortable: true,
+                            field: "serialNumber",
+                            items: <cx><Link href:tpl="/devices/{$record.id}" text:bind="$record.serialNumber" /></cx>
+                        }, {
+                            header: "Name",
+                            field: 'name',
+                            sortable: true,
+                            style: 'width: 100%',
+                            items: <cx><Link href:tpl="/devices/{$record.id}" text:bind="$record.name" /></cx>
+                        }]
+                    } 
+                />   
             </Section>
         </FlexRow>
         <Toast
