@@ -17,15 +17,13 @@ class AuthController extends Controller {
                 displayName: user.displayName,
                 photoURL: user.photoURL,
                 uid: user.uid,
-                isAdmin: true
+                isAdmin: false
             }
         );
 
         // check if user is admin
         if (!user) return;
         database.ref(`/admins/${user.uid}`).once('value', snapshot => {
-                //debugger;
-                console.log('-----------------------------------', snapshot.val());
                 let isAdmin = !!snapshot.val();
                 this.store.update('user', user => ({ ...user, isAdmin }));
             });
