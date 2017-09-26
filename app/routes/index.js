@@ -3,9 +3,6 @@ import { FirstVisibleChildLayout, bind } from 'cx/ui'
 
 import AppLayout from '../layout';
 
-import Leagues from './leagues';
-import Players from './players';
-import Schedule from './schedule';
 import SignIn from './sign-in';
 import About from './about';
 
@@ -33,9 +30,6 @@ export default <cx>
                 </Route>
                 <Route route="~/sign-in" url={bind("url")}>
                     <SignIn />
-                </Route>
-                <Route route="~/" url={bind("url")} prefix>
-                    <Leagues />
                 </Route>
                 
             <Section title="Page Not Found" mod="card">
