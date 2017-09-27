@@ -1,10 +1,12 @@
 import { Store } from 'cx/data';
 import { Url, History, Widget, startAppLoop } from 'cx/ui';
 import { Timing, Debug } from 'cx/util';
-
+import { enableMaterialLabelPlacement, enableMaterialHelpPlacement } from "cx-theme-material";
 import {enableAllInternalDependencies} from 'cx/widgets';
 import {Culture} from 'cx/ui';
-import "cx-theme-material";
+
+enableMaterialLabelPlacement();
+enableMaterialHelpPlacement();
 
 Culture.setCulture('sr-Latn-RS');
 enableAllInternalDependencies();
