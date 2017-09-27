@@ -3,27 +3,6 @@ import {ContentPlaceholder, bind, expr} from 'cx/ui';
 import Controller from "./Controller";
 import UserAccount from './UserAccount';
 
-const items = [, {
-    text: 'Home',
-    url: '~/leagues',
-    items: [{ 
-        text: 'Igrači',
-        url: '+/players',
-    },{
-        text: 'Rezultati',
-        url: '+/games'
-    }, {
-        text: 'Rang lista',
-        url: '+/ranking'
-    }]
-},{
-    text: 'About',
-    url: '~/about'
-}, {
-    text: 'Admin',
-    url: '~/sign-in'
-}]
-
 export default <cx>
    <div
       controller={Controller}
@@ -52,14 +31,14 @@ export default <cx>
       <aside class="aside">
          <h1>Spin liga</h1>
          <dl>
-            <Repeater records={items}>
+            <Repeater records={bind('navItems')}>
                 <dt>
                     <Text if={expr("!{$record.url}")} bind="$record.text" />                        
                     <Link if={expr("!!{$record.url}")} href={bind("$record.url")} text={bind("$record.text")} url={bind("url")} match="prefix" />
                 </dt>
-                <Repeater records={bind("$record.items")} if={expr('!!{league.id}')}>
+                <Repeater records={bind("$record.items")} if={bind('$record.visible')} recordName="$sublink">
                     <dd>
-                        <Link href={bind("$record.url")} match="prefix" text={bind("$record.text")} url={bind("url")} />
+                        <Link href={bind("$sublink.url")} match="prefix" text={bind("$sublink.text")} url={bind("url")} />
                     </dd>
                 </Repeater>                        
             </Repeater>
