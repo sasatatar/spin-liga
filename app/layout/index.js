@@ -36,7 +36,7 @@ export default <cx>
                     <Text if={expr("!{$record.url}")} bind="$record.text" />                        
                     <Link if={expr("!!{$record.url}")} href={bind("$record.url")} text={bind("$record.text")} url={bind("url")} match="prefix" />
                 </dt>
-                <Repeater records={bind("$record.items")} if={bind('$record.visible')} recordName="$sublink">
+                <Repeater records={bind("$record.items")} if={bind('$record.showSubmenu')} recordName="$sublink">
                     <dd>
                         <Link href={bind("$sublink.url")} match="prefix" text={bind("$sublink.text")} url={bind("url")} />
                     </dd>

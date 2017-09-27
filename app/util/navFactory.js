@@ -2,7 +2,7 @@ export function navFactory(isAdmin=false) {
     return [{
         text: 'Home',
         url: '~/leagues',
-        visible: true,
+        showSubmenu: true,
         items: [{ 
             text: 'Igrači',
             url: '~/players',
@@ -19,7 +19,7 @@ export function navFactory(isAdmin=false) {
     }, {
         text: 'Admin',
         url: '~/admin',
-        visible: isAdmin,
+        showSubmenu: isAdmin,
         items: [{ 
             text: 'Lige',
             url: '~/admin/leagues',
