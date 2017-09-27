@@ -37,6 +37,7 @@ export default <cx>
         <FlexRow target="desktop" hspacing>
             <Section
                 class="flex-1"
+                style="max-width: 800px"
                 mod="card"
                 title:expr="{record.name} || 'New league'"
             >
@@ -49,6 +50,13 @@ export default <cx>
                                     label="Name"
                                     class="flex-1 autogrow"
                                     required
+                                />
+
+                                <NumberField
+                                    value={{ bind: "record.playersCount", defaultValue: 0 }}
+                                    label="Number of players"
+                                    class="flex-1 autogrow"
+                                    disabled
                                 />
                             </FlexRow>
             

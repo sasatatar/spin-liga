@@ -68,10 +68,9 @@ export default <cx>
                         style="flex: 1"
                         class="flex-1 momentum-scroll"
                         scrollable
+                        defaultSortField="name"
+                        defaultSortDirection="ASC"
                         mod="responsive"
-                        remoteSort
-                        sortField:bind="$page.sortField"
-                        sortDirection:bind="$page.sortDirection"
                         selection={{
                             type: KeySelection,
                             keyField: 'id',
@@ -82,17 +81,14 @@ export default <cx>
                                 field: "name",
                                 sortable: true,
                                 header: "Name"
+                            },{
+                                field: "playersCount",
+                                sortable: true,
+                                header: "Number of players",
+                                format: 'n:0'
                             }
                           ]
                         }
-                    />
-
-                    <Pagination 
-                        if:expr="{$page.pageCount} > 1"
-                        page:bind="$page.page"
-                        pageCount:bind="$page.pageCount"
-                        length={5} 
-                        style="margin: 5px"
                     />
                 </LoadingOverlay>
             </div>

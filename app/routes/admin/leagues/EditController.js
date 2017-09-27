@@ -33,8 +33,6 @@ export default class extends Controller {
         let id = this.store.get('$root.$route.id');
         let data = this.store.get('record');
 
-        this.store.set('error.show', false);
-
         let postData = {
             ...data
         };
