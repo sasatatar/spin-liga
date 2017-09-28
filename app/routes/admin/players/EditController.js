@@ -58,8 +58,20 @@ export default class extends Controller {
         let oldLeagueId = this.store.get('oldLeagueId');
         let newLeagueId = data.leagueId;
         
-        // update leagues playersCount if needed
-        if (oldLeagueId && oldLeagueId !== data.leagueId) {
+        // update leagues' playersCount if needed
+        if (id === 'new') {
+            let leagues = this.store.get('leaguesMap');
+            let newLeagueId = data.leagueId;
+            let newLeague = leagues[newLeagueId];
+            leagues = {
+                ...leagues,
+                [newLeagueId]: {
+                    ...newLeague,
+                    playersCount: newLeague.playersCount + 1
+                }
+            };
+            putLeagues(leagues);
+        } else if (oldLeagueId && oldLeagueId !== data.leagueId) {
             let leagues = this.store.get('leaguesMap');
             let oldLeague = leagues[oldLeagueId];
             let newLeague = leagues[newLeagueId];
@@ -96,29 +108,28 @@ export default class extends Controller {
     }
 
     onDelete() {
-        // debugger;
-        // // update leagues playersCount
-        // let data = this.store.get('record');
-        // let leagues = this.store.get('leaguesMap');
-        // let { leagueId } = data;
-        // let league = leagues[leagueId];
-        // leagues = {
-        //     ...leagues,
-        //     [leagueId]: {
-        //         ...league,
-        //         playersCount: league.playersCount - 1
-        //     }
-        // };
-        // putLeagues(leagues);
+        //update leagues' playersCount
+        let data = this.store.get('record');
+        let leagues = this.store.get('leaguesMap');
+        let { leagueId } = data;
+        let league = leagues[leagueId];
+        leagues = {
+            ...leagues,
+            [leagueId]: {
+                ...league,
+                playersCount: league.playersCount - 1
+            }
+        };
+        putLeagues(leagues);
         
-        // let id = this.store.get('record.id');
-        // if (id) {
-        //     return deletePlayer(id)
-        //         .then(() => {
-        //             this.onCancel();
-        //         });
-        // }
-        console.log('---------------+++++++++++++++++ test')
+        let id = this.store.get('record.id');
+        if (id) {
+            return deletePlayer(id)
+                .then(() => {
+                    this.onCancel();
+                });
+        }
+        
     }
 
     onCancel() {
