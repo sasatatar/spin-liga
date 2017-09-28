@@ -11,5 +11,5 @@ export default <cx>
 		<Leagues />
 		<Players />
 	</Route>
-	<RedirectRoute route="~/admin" prefix url:bind="url" redirect="~/sign-in" />
+	<RedirectRoute route="~/admin/(*splat)" prefix url:bind="url" redirect="~/sign-in" />
 </cx>;

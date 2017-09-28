@@ -1,10 +1,10 @@
 import { Controller, History } from 'cx/ui';
 
-import { getCallgroup, 
-    postCallgroup, 
-    putCallgroup, 
-    deleteCallgroup,
-    getCallgroupMembers
+import { getLeague, 
+    postLeague, 
+    putLeague, 
+    deleteLeague,
+    getLeagueMembers
 } from 'app/api';
 
 export default class extends Controller {
@@ -20,25 +20,18 @@ export default class extends Controller {
         }
         else {
             this.store.set('loading', true);
-            Promise.all([
-                getCallgroup(id),
-                getCallgroupMembers(id)
-            ])
-            .catch(() => this.store.set('loading', false))
-            .then(([data, members]) => {
-                this.store.set('record', data);
-                this.store.set('members', members);
-                this.store.set('loading', false);
-                this.store.set('init', true);
-            });
+            getLeague(id)
+                .then((data) => {
+                    this.store.set('record', data.val());
+                    this.store.set('loading', false);
+                    this.store.set('init', true);
+                });
         }
     }
 
     onSave(e, {store}) {
         let id = this.store.get('$root.$route.id');
         let data = this.store.get('record');
-
-        this.store.set('error.show', false);
 
         let postData = {
             ...data
@@ -47,9 +40,9 @@ export default class extends Controller {
         let promise;
 
         if (id == 'new') {
-            promise = postCallgroup(postData);
+            promise = postLeague(postData);
         } else {
-            promise = putCallgroup(id, postData);
+            promise = putLeague(postData.id, postData);
         }
 
         return promise
@@ -59,9 +52,10 @@ export default class extends Controller {
     }
 
     onDelete() {
-        let id = this.store.get('$root.$route.id');
+        let id = this.store.get('record.id');
+        console.log('-----------------------', id)
         if (id) {
-            return deleteCallgroup(id)
+            return deleteLeague(id)
                 .then(() => {
                     this.onCancel();
                 });
@@ -69,6 +63,6 @@ export default class extends Controller {
     }
 
     onCancel() {
-        History.pushState({}, null, "~/callgroups/list");
+        History.pushState({}, null, "~/admin/leagues/list");
     }
 }

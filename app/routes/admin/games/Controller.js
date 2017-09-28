@@ -1,55 +1,35 @@
 import { Controller, History } from 'cx/ui';
-import { 
-    queryCallgroups
-} from 'app/api';
+import {queryLeagues, queryPlayers} from 'app/api';
 
 export default class extends Controller {
     onInit() {
         this.addTrigger('load', [], ::this.load, true);
 
-        this.store.init('$page.page', 1);
-        this.store.init('$page.take', 50);
-        this.store.init('$page.filter', { query: null });
-
-        this.addTrigger('page', ['$page.take', '$page.sortField', '$page.sortDirection', '$page.filter'], () => {
-            this.store.set('$page.page', 1);
-        }, true);
-
-        this.addTrigger('pagination', ['$page.take', '$page.page', '$page.sortField', '$page.sortDirection', '$page.filter'], () => { 
-            this.load(); 
+        this.addComputable('$page.filteredData', ['$page.data', '$page.filter'], (data=[], q) => {
+            if (!q) return data;
+            return data.filter(item => item.name.toLowerCase().includes(q.toLowerCase()));
         });
-
     }
 
     load() {
-        let page = this.store.get('$page.page'),
-            take = this.store.get('$page.take'),
-            sortField = this.store.get('$page.sortField'),
-            sortDirection = this.store.get('$page.sortDirection'),
-            filter = this.store.get('$page.filter.query');
-        
         this.store.set('$page.loading', true);
-        queryCallgroups({
-            q: filter,
-            page: page,
-            take: take,
-            sortField: sortField,
-            sortDirection: sortDirection
-        })
-        .catch(() => this.store.set('$page.loading', false))
-        .then(data => {
-            this.store.set('$page.data', data.slice(0, take));
-            this.store.set('$page.pageCount', data.length > take ? page + 1 : page);
-            this.store.set('$page.loading', false);
-        });
+        queryLeagues()
+            .catch(() => this.store.set('$page.loading', false))
+            .then(data => {
+                this.store.set('$page.loading', false);
+                data = data.val();
+                if (!data) return;
+                data = Object.keys(data).map(k => data[k]);
+                this.store.set('$page.data', data);
+            });
     }
 
     onAdd() {
-        History.pushState({}, null, '~/callgroups/new')
+        History.pushState({}, null, '~/admin/leagues/new')
     }
 
     onEdit(e, {store}) {
         let id = store.get('$record.id') || store.get('$page.selected');
-        History.pushState({}, null, `~/callgroups/${id}`);
+        History.pushState({}, null, `~/admin/leagues/${id}`);
     }
 }
