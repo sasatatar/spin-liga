@@ -67,7 +67,7 @@ export default <cx>
                         }}
                         columns={[
                             { header: 'Full name', field: 'name', sortable: true },
-                            { header: 'Year of birth', field: 'yearOfBirth', sortable: true, format: 'datetime;ddMMYYYY' },
+                            { header: 'Year of birth', field: 'yearOfBirth', sortable: true },
                             { 
                                 header: 'Left- or right-handed',
                                 items: <cx><Text value={computable('$record.leftOrRighthanded', record => {
