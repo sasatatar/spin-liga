@@ -19,6 +19,11 @@ export function putLeague(key, data) {
    return dataRef.update({ [key]: data });
 }
 
+export function putLeagues(data) {
+   console.log('--------------------', data);
+   return dataRef.set(data);
+}
+
 export function deleteLeague(key) {
    return dataRef.child(key).remove();
 }

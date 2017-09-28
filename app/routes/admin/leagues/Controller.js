@@ -1,5 +1,5 @@
 import { Controller, History } from 'cx/ui';
-import {queryLeagues} from 'app/api';
+import {queryLeagues, queryPlayers} from 'app/api';
 
 export default class extends Controller {
     onInit() {
@@ -14,14 +14,14 @@ export default class extends Controller {
     load() {
         this.store.set('$page.loading', true);
         queryLeagues()
-        .catch(() => this.store.set('$page.loading', false))
-        .then(data => {
-            this.store.set('$page.loading', false);
-            data = data.val();
-            if (!data) return;
-            data = Object.keys(data).map(k => data[k]);
-            this.store.set('$page.data', data);
-        });
+            .catch(() => this.store.set('$page.loading', false))
+            .then(data => {
+                this.store.set('$page.loading', false);
+                data = data.val();
+                if (!data) return;
+                data = Object.keys(data).map(k => data[k]);
+                this.store.set('$page.data', data);
+            });
     }
 
     onAdd() {

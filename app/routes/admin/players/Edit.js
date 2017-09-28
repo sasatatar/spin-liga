@@ -24,15 +24,15 @@ import Controller from './EditController';
 
 export default <cx>
    <Rescope bind="$page" controller={Controller}>
-        <h2 putInto="header" if:expr="{$root.$route.id} === 'new'">Dodaj igraca</h2>
-        <h2 putInto="header" if:expr="{$root.$route.id} !== 'new'">Izmijeni igraca</h2>
+        <h2 putInto="header" if:expr="{$root.$route.id} === 'new'">Add a player</h2>
+        <h2 putInto="header" if:expr="{$root.$route.id} !== 'new'">Edit player</h2>
        
         <FlexRow target="desktop" hspacing>
             <Section
                 class="flex-1"
                 mod="card"
                 style="max-width: 800px"
-                title:expr="{record.name} || 'Novi igrac'"
+                title:expr="{record.name} || 'New player'"
             >
                 <LoadingOverlay loading:bind="loading" mod="inset">
                     <ValidationGroup invalid:bind="invalid">
@@ -40,14 +40,14 @@ export default <cx>
                             <FlexRow target="tablet" hspacing="medium">
                                 <TextField
                                     value:bind="record.name"
-                                    label="Ime i prezime"
+                                    label="Full name"
                                     class="flex-1 autogrow"
                                     required
                                 />
 
                                 <TextField
                                     value:bind="record.yearOfBirth"
-                                    label="Godina rođenja"
+                                    label="Year of birth"
                                     class="flex-1 autogrow"
                                 />
                             </FlexRow>
@@ -55,14 +55,14 @@ export default <cx>
                             <FlexRow target="tablet" hspacing="medium">
                                 <LookupField
                                     value:bind="record.leftOrRighthanded"
-                                    label="Ljevak ili dešnjak"
+                                    label="Left- or right-handed"
                                     options:bind="handOptions"
                                     class="flex-1 autogrow"
                                 />
 
                                 <LookupField
                                     value:bind="record.leagueId"
-                                    label="Liga"
+                                    label="League"
                                     options:bind="leagues"
                                     optionTextField="name"
                                     class="flex-1 autogrow"
