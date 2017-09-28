@@ -16,11 +16,11 @@ export default class extends Controller {
         queryLeagues()
         .catch(() => this.store.set('$page.loading', false))
         .then(data => {
-            //debugger;
+            this.store.set('$page.loading', false);
             data = data.val();
+            if (!data) return;
             data = Object.keys(data).map(k => data[k]);
             this.store.set('$page.data', data);
-            this.store.set('$page.loading', false);
         });
     }
 

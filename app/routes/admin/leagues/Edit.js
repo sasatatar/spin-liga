@@ -9,20 +9,12 @@ import {
     PureContainer,
     HtmlElement,
     Button,
-    LookupField,
-    Pagination,
     TextField,
     NumberField,
-    Toast,
-    Switch,
-    Text,
     FlexCol,
     FlexRow,
     ValidationGroup,
-    Section,
-    List,
-    Grid,
-    Link
+    Section
 } from 'cx/widgets';
 
 import { AsyncButton, LoadingOverlay } from 'app/components';
@@ -88,16 +80,5 @@ export default <cx>
                 </LoadingOverlay>
             </Section>
         </FlexRow>
-        <Toast
-            visible={{
-                bind: "$page.error.show",
-                defaultValue: false
-            }}
-            timeout={5000}
-            mod="warning"
-            pad={false}
-        >
-            <Text bind="$page.error.msg"/>
-        </Toast>
    </Rescope>
 </cx>;

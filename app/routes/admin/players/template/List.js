@@ -7,9 +7,19 @@ import {
 import { 
     PureContainer,
     HtmlElement, 
+    Route, 
+    Select, 
+    DateField,
+    Slider, 
     Button, 
+    Tab, 
+    Icon,
     Grid, 
+    Pagination, 
     TextField, 
+    Menu, 
+    Submenu, 
+    Checkbox,
     Section,
     FlexRow,
     FlexCol
@@ -23,12 +33,12 @@ const mw = 768;
 
 export default <cx>
     <PureContainer controller={Controller}>
-       <h2 putInto="header">Players</h2>    
+       <h2 putInto="header">Call Groups</h2>    
         <FlexCol>
             <Section mod="card">
                 <FlexRow spacing>
                     <TextField 
-                        value={{bind: "$page.filter"}}
+                        value={{bind: "$page.filter.query", debounce: 300 }}
                         placeholder="Search..."
                         style="flex: 1 0 0"
                         inputStyle="border-color: transparent; box-shadow: none; font-size: 16px"
@@ -54,26 +64,50 @@ export default <cx>
                 <LoadingOverlay loading:bind="$page.loading" >
                     <Grid
                         emptyText="Nothing to show."
-                        records:bind="$page.filteredData"
+                        records:bind="$page.data"
                         style="flex: 1"
                         class="flex-1 momentum-scroll"
                         scrollable
                         mod="responsive"
+                        remoteSort
+                        sortField:bind="$page.sortField"
+                        sortDirection:bind="$page.sortDirection"
                         selection={{
                             type: KeySelection,
                             keyField: 'id',
                             bind: '$page.selected'
                         }}
-                        columns={[
-                            { header: 'Ime i prezime', field: 'name', sortable: true },
-                            { header: 'Datum rođenja', field: 'yearOfBirth', sortable: true, format: 'datetime;ddMMYYYY' },
-                            { 
-                                header: 'Ljevak ili dešnjak', 
-                                field: 'leftOrRighthanded', 
-                                sortable: true
+                        columns={
+                            [{
+                                field: "name",
+                                sortable: true,
+                                header: "Name"
                             },
-                            { header: 'Liga', field: 'leagueId', sortable: true }
-                        ]} />
+                            {
+                                header: "Max. Members",
+                                sortable: true,
+                                field: "maxMembers"                          
+                            },
+                            {
+                                header: "Current Members",
+                                field: "currentMembers"
+                            },
+                            {
+                                header: "Recording",
+                                field: "config.recording",
+                                items: <cx><Checkbox value:expr="{$record.config.recording}" disabled /></cx>
+                            }
+                          ]
+                        }
+                    />
+
+                    <Pagination 
+                        if:expr="{$page.pageCount} > 1"
+                        page:bind="$page.page"
+                        pageCount:bind="$page.pageCount"
+                        length={5} 
+                        style="margin: 5px"
+                    />
                 </LoadingOverlay>
             </div>
         </FlexCol>

@@ -1,16 +1,25 @@
 import { Controller, History } from 'cx/ui';
 
-import { getCallgroup, 
-    postCallgroup, 
-    putCallgroup, 
-    deleteCallgroup,
-    getCallgroupMembers
+import { getPlayer, 
+    postPlayer, 
+    putPlayer, 
+    deletePlayer,
+    queryLeagues
 } from 'app/api';
 
 export default class extends Controller {
     onInit() {
-        this.store.set('init', false);
+        
         this.addTrigger('load', [], ::this.load, true);
+        this.store.set('handOptions', [
+            {
+                id: 0,
+                text: "Ljevoruk"
+            },{
+                id: 1,
+                text: "Desnoruk"
+            }
+        ])
     }
 
     load() {
@@ -20,25 +29,28 @@ export default class extends Controller {
         }
         else {
             this.store.set('loading', true);
-            Promise.all([
-                getCallgroup(id),
-                getCallgroupMembers(id)
-            ])
-            .catch(() => this.store.set('loading', false))
-            .then(([data, members]) => {
-                this.store.set('record', data);
-                this.store.set('members', members);
-                this.store.set('loading', false);
-                this.store.set('init', true);
-            });
+            getPlayer(id)
+                .then((data) => {
+                    this.store.set('loading', false);
+                    this.store.set('record', data.val());
+                    this.store.set('init', true);
+                });
         }
+        
+        queryLeagues()
+            .then(data => {
+                data = data.val();
+                if (!data) return;
+                data = Object.keys(data).map(k => data[k]);
+                this.store.set('leagues', data);
+            })
+            .catch(() => this.store.set('$page.loading', false));
     }
 
     onSave(e, {store}) {
         let id = this.store.get('$root.$route.id');
+        console.log('-----------------------', id)
         let data = this.store.get('record');
-
-        this.store.set('error.show', false);
 
         let postData = {
             ...data
@@ -47,9 +59,9 @@ export default class extends Controller {
         let promise;
 
         if (id == 'new') {
-            promise = postCallgroup(postData);
+            promise = postPlayer(postData);
         } else {
-            promise = putCallgroup(id, postData);
+            promise = putPlayer(postData.id, postData);
         }
 
         return promise
@@ -59,9 +71,10 @@ export default class extends Controller {
     }
 
     onDelete() {
-        let id = this.store.get('$root.$route.id');
+        let id = this.store.get('record.id');
+        console.log('-----------------------', id)
         if (id) {
-            return deleteCallgroup(id)
+            return deletePlayer(id)
                 .then(() => {
                     this.onCancel();
                 });
@@ -69,6 +82,6 @@ export default class extends Controller {
     }
 
     onCancel() {
-        History.pushState({}, null, "~/callgroups/list");
+        History.pushState({}, null, "~/admin/players/list");
     }
 }
