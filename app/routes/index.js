@@ -34,9 +34,7 @@ export default <cx>
             </Route>
             */}
             {/*restricted access to admins only*/}
-            
             <Admin />
-            
             
             <Section title="Page Not Found" mod="card">
                 This page doesn't exists. Please check your URL.
