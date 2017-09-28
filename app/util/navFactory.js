@@ -4,13 +4,13 @@ export function navFactory(isAdmin=false) {
         url: '~/leagues',
         showSubmenu: true,
         items: [{ 
-            text: 'Igrači',
+            text: 'Players',
             url: '~/players',
         },{
-            text: 'Rezultati',
+            text: 'Results',
             url: '~/games'
         }, {
-            text: 'Rang lista',
+            text: 'Rankings',
             url: '~/ranking'
         }]
     },{
@@ -21,16 +21,16 @@ export function navFactory(isAdmin=false) {
         url: '~/admin',
         showSubmenu: isAdmin,
         items: [{ 
-            text: 'Lige',
+            text: 'Leagues',
             url: '~/admin/leagues',
         },{ 
-            text: 'Igrači',
+            text: 'Players',
             url: '~/admin/players',
         },{
-            text: 'Rezultati',
+            text: 'Games',
             url: '~/admin/games'
         }, {
-            text: 'Rang lista',
+            text: 'Rankings',
             url: '~/admin/ranking'
         }]
     }];
