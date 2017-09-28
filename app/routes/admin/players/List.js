@@ -12,7 +12,8 @@ import {
     TextField, 
     Section,
     FlexRow,
-    FlexCol
+    FlexCol,
+    Text
 } from 'cx/widgets';
 import {LoadingOverlay, ExpandableMenu} from 'app/components';
 import Controller from './Controller';
@@ -65,14 +66,16 @@ export default <cx>
                             bind: '$page.selected'
                         }}
                         columns={[
-                            { header: 'Ime i prezime', field: 'name', sortable: true },
-                            { header: 'Datum rođenja', field: 'yearOfBirth', sortable: true, format: 'datetime;ddMMYYYY' },
+                            { header: 'Full name', field: 'name', sortable: true },
+                            { header: 'Year of birth', field: 'yearOfBirth', sortable: true, format: 'datetime;ddMMYYYY' },
                             { 
-                                header: 'Ljevak ili dešnjak', 
-                                field: 'leftOrRighthanded', 
-                                sortable: true
+                                header: 'Left- or right-handed',
+                                items: <cx><Text value={computable('$record.leftOrRighthanded', record => {
+                                    return record === 0 ? "Left-handed" : (record === 1 ? "Right-handed" : "-");
+                                })} />
+                                </cx>
                             },
-                            { header: 'Liga', field: 'leagueId', sortable: true }
+                            { header: 'League', field: 'leagueName', sortable: true }
                         ]} />
                 </LoadingOverlay>
             </div>
