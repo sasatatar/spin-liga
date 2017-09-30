@@ -29,9 +29,6 @@ export function navFactory(isAdmin=false) {
         },{
             text: 'Games',
             url: '~/admin/games'
-        }, {
-            text: 'Rankings',
-            url: '~/admin/ranking'
         }]
     }];
 }

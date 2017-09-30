@@ -67,17 +67,17 @@ export default <cx>
                             bind: '$page.selected'
                         }}
                         columns={[
-                            { header: 'Meč', field: 'game', sortable: true},
-                            { header: 'Igrač A', field: 'teamA.name', align: 'left', sortable: true},
-                            { header: 'Rezultat', field: 'result', align: 'center'},
-                            { header: 'Igrač B', field: 'teamB.name', align: 'right', sortable: true},
+                            { header: 'Game', field: 'game', sortable: true},
+                            { header: 'Player A', field: 'teamA.name', align: 'left', sortable: true},
+                            { header: 'Result', field: 'result', align: 'center'},
+                            { header: 'Player B', field: 'teamB.name', align: 'right', sortable: true},
                         ]} 
                         grouping={[{
-                        key: {
-                            name: { bind: '$record.round' }
-                        },
-                        caption: { expr: '{$group.name} + ". Kolo"' }
-                    }]}/>
+                            key: {
+                                name: { bind: '$record.round' }
+                            },
+                            caption: { expr: '{$group.name} + ". Round"' }
+                        }]}/>
                 </LoadingOverlay>
             </div>
         </FlexCol>
