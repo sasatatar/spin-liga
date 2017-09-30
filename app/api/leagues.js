@@ -20,7 +20,6 @@ export function putLeague(key, data) {
 }
 
 export function putLeagues(data) {
-   console.log('--------------------', data);
    return dataRef.set(data);
 }
 

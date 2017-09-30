@@ -53,7 +53,6 @@ export default class extends Controller {
 
     onDelete() {
         let id = this.store.get('record.id');
-        console.log('-----------------------', id)
         if (id) {
             return deleteLeague(id)
                 .then(() => {
