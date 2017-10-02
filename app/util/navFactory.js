@@ -28,7 +28,15 @@ export function navFactory(isAdmin=false) {
             url: '~/admin/players',
         },{
             text: 'Games',
-            url: '~/admin/games'
+            url: '~/admin/games',
+            items: [{
+                text: 'League A',
+                url: '~/admin/games/a',
+            },
+            {
+                text: 'League B',
+                url: '~/admin/games/b',
+            }]
         }]
     }];
 }

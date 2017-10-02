@@ -2,7 +2,7 @@ import {database} from './firebase';
 
 const dataRef = database.ref('/games');
 
-export function queryGames() {
+export function queryGames(leagueId) {
     return new Promise((resolve, reject) => {
         dataRef.once("value")
         .then(snapshot => {

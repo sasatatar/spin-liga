@@ -1,35 +1,53 @@
 import { Controller, History } from 'cx/ui';
-import {queryLeagues, queryPlayers, queryGames} from 'app/api';
+import {queryLeagues, getPlayersMap, queryGames} from 'app/api';
 
 export default class extends Controller {
-    onInit() {
+    onInit() {        
         this.addTrigger('load', [], ::this.load, true);
 
-        this.addComputable('$page.filteredData', ['$page.data', '$page.filter'], (data=[], q) => {
+        this.addComputable('filteredData', ['data', 'filter'], (data=[], q) => {
             if (!q) return data;
             return data.filter(item => item.name.toLowerCase().includes(q.toLowerCase()));
         });
+
+        this.addTrigger('games', ['leagueId'], leagueId => {
+            if (!leagueId) return;
+            this.store.set('loading', true);
+            queryGames(leagueId)
+                .catch(() => this.store.set('loading', false))
+                .then(data => {
+                    this.store.set('loading', false);
+                    this.store.set('games', data);
+                });
+        }, true);
+
+        this.addTrigger('players', ['leagueId'], leagueId => {
+            if (!leagueId) return;
+            this.store.set('loading', true);
+            getPlayersMap(leagueId)
+                .catch(() => this.store.set('loading', false))
+                .then(data => {
+                    this.store.set('loading', false);
+                    this.store.set('playersMap', data);
+                });
+        }, true);
     }
 
-    load() {
-        this.store.set('$page.loading', true);
-        queryGames()
-            .catch(() => this.store.set('$page.loading', false))
-            .then(data => {
-                this.store.set('$page.loading', false);
-                data = data.val();
-                if (!data) return;
-                data = Object.keys(data).map(k => data[k]);
-                this.store.set('$page.data', data);
-            });
+    async load() {
+        this.store.set('loading', true);
+        let leagues = await queryLeagues();
+        this.store.set('leagues', leagues);
+        this.store.init('leagueId', leagues[0].id);
+        let leagueId = this.store.get('leagueId');
+        this.store.set('loading', false);
     }
 
-    onAdd() {
+    onGenerate() {
         History.pushState({}, null, '~/admin/leagues/new')
     }
 
     onEdit(e, {store}) {
-        let id = store.get('$record.id') || store.get('$page.selected');
-        History.pushState({}, null, `~/admin/leagues/${id}`);
+        let id = store.get('$record.id') || store.get('selected');
+        History.pushState({}, null, `~/admin/games/${id}`);
     }
 }

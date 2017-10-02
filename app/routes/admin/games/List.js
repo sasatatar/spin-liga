@@ -2,7 +2,8 @@ import {
     VDOM,
     KeySelection,
     FirstVisibleChildLayout,
-    computable
+    computable,
+    Rescope
  } from 'cx/ui';
 import { 
     PureContainer,
@@ -12,7 +13,8 @@ import {
     TextField, 
     Section,
     FlexRow,
-    FlexCol
+    FlexCol, 
+    LookupField
 } from 'cx/widgets';
 import {LoadingOverlay, ExpandableMenu} from 'app/components';
 import Controller from './Controller';
@@ -22,13 +24,15 @@ import List from './List';
 const mw = 768;
 
 export default <cx>
-    <PureContainer controller={Controller}>
-       <h2 putInto="header">Leagues</h2>    
+    <Rescope bind="$page" controller={Controller}>
+        <FlexRow putInto="header" hspacing>
+            <h2>Leagues</h2>
+        </FlexRow>
         <FlexCol>
             <Section mod="card">
                 <FlexRow spacing>
                     <TextField 
-                        value={{bind: "$page.filter"}}
+                        value={{bind: "filter"}}
                         placeholder="Search..."
                         style="flex: 1 0 0"
                         inputStyle="border-color: transparent; box-shadow: none; font-size: 16px"
@@ -36,14 +40,24 @@ export default <cx>
                         showClear
                     />
 
+                    <LookupField
+                        style="width: 4rem;"
+                        label="League"
+                        labelPlacement={null}
+                        value:bind="leagueId"
+                        options:bind="leagues"
+                        optionTextField="name"
+                        required
+                    />
+
                     <ExpandableMenu expand={window.innerWidth >= mw}>
-                        <Button mod="hollow" onClick="onAdd" icon="add">Add</Button>
+                        <Button mod="hollow" onClick="onGenerate" icon="list">Generate schedule</Button>
                         <Button mod="hollow" 
-                            disabled:expr="!{$page.selected}" 
+                            disabled:expr="!{selected}" 
                             onClick="onEdit" icon="edit" 
-                            visible={computable("$page.selected", (selected) => selected || window.innerWidth >= mw)}
+                            visible={computable("selected", (selected) => selected || window.innerWidth >= mw)}
                         >
-                            Edit
+                            Edit result
                         </Button>
                         <Button mod="hollow" onClick="load" icon="refresh">Refresh</Button>
                     </ExpandableMenu>
@@ -51,10 +65,10 @@ export default <cx>
             </Section>
 
             <div style="margin-top: 12px; flex: 1">
-                <LoadingOverlay loading:bind="$page.loading" >
+                <LoadingOverlay loading:bind="loading" >
                     <Grid
                         emptyText="Nothing to show."
-                        records:bind="$page.filteredData"
+                        records:bind="filteredData"
                         style="flex: 1"
                         class="flex-1 momentum-scroll"
                         scrollable
@@ -64,7 +78,7 @@ export default <cx>
                         selection={{
                             type: KeySelection,
                             keyField: 'id',
-                            bind: '$page.selected'
+                            bind: 'selected'
                         }}
                         columns={[
                             { header: 'Game', field: 'game', sortable: true},
@@ -81,5 +95,5 @@ export default <cx>
                 </LoadingOverlay>
             </div>
         </FlexCol>
-    </PureContainer>
+    </Rescope>
 </cx>

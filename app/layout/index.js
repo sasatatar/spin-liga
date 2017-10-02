@@ -39,7 +39,13 @@ export default <cx>
                 <Repeater records={bind("$record.items")} if={bind('$record.showSubmenu')} recordName="$sublink">
                     <dd>
                         <Link href={bind("$sublink.url")} match="prefix" text={bind("$sublink.text")} url={bind("url")} />
+                        <Repeater records={bind("$sublink.items")} if={bind('$record.showSubmenu')} recordName="$league">
+                            <dd>
+                                <Link href={bind("$league.url")} match="prefix" text={bind("$league.text")} url={bind("url")} />
+                            </dd>
+                        </Repeater> 
                     </dd>
+                       
                 </Repeater>                        
             </Repeater>
         </dl>
