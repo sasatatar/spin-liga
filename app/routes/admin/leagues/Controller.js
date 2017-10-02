@@ -1,5 +1,5 @@
 import { Controller, History } from 'cx/ui';
-import {queryLeagues, queryPlayers} from 'app/api';
+import {queryLeagues} from 'app/api';
 
 export default class extends Controller {
     onInit() {
@@ -17,9 +17,6 @@ export default class extends Controller {
             .catch(() => this.store.set('$page.loading', false))
             .then(data => {
                 this.store.set('$page.loading', false);
-                data = data.val();
-                if (!data) return;
-                data = Object.keys(data).map(k => data[k]);
                 this.store.set('$page.data', data);
             });
     }

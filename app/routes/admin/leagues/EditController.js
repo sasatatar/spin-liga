@@ -22,7 +22,7 @@ export default class extends Controller {
             this.store.set('loading', true);
             getLeague(id)
                 .then((data) => {
-                    this.store.set('record', data.val());
+                    this.store.set('record', data);
                     this.store.set('loading', false);
                     this.store.set('init', true);
                 });

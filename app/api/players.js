@@ -31,11 +31,25 @@ import {database} from './firebase';
 const dataRef = database.ref('/players');
 
 export function queryPlayers() {
-   return dataRef.once('value');
+    return new Promise((resolve, reject) => {
+        dataRef.once("value")
+        .then(snapshot => {
+            let data = snapshot.val() || [];
+            resolve(Object.keys(data).map(k => data[k]));
+        })
+        .catch(e => reject(e));
+    });
 }
 
 export function getPlayer(key) {
-   return dataRef.child(key).once('value');
+    return new Promise((resolve, reject) => {
+        dataRef.child(key).once("value")
+            .then(snapshot => {
+                let data = snapshot.val() || {};
+                resolve(data);
+            })
+            .catch((e) => reject(e));
+    });
 }
 
 export function postPlayer(data) {

@@ -17,14 +17,10 @@ export default class extends Controller {
             .catch(() => this.store.set('$page.loading', false))
             .then(([players, leagues]) => {
                 this.store.set('$page.loading', false);
-                players = players.val();
-                leagues = leagues.val();
-                if (!(players && leagues)) return;
-                players = Object.keys(players).map(k => {
-                    let player = players[k];
+                players = players.map(player => {
                     return {
                         ...player,
-                        leagueName: leagues[player.leagueId].name
+                        leagueName: leagues.find(league => league.id == player.leagueId).name
                     }    
                 });
                 this.store.set('$page.data', players);

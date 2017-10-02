@@ -5,7 +5,7 @@ import { getPlayer,
     putPlayer, 
     deletePlayer,
     queryLeagues,
-    putLeagues
+    putLeague
 } from 'app/api';
 
 export default class extends Controller {
@@ -34,19 +34,15 @@ export default class extends Controller {
             this.store.set('loading', true);
             getPlayer(id)
                 .then((data) => {
-                    data = data.val();
                     this.store.set('loading', false);
                     this.store.set('record', data);
                     this.store.set('oldLeagueId', data.leagueId);
-                });
+                })
+                .catch(() => this.store.set('$page.loading', false));
         }
         
         queryLeagues()
             .then(data => {
-                data = data.val();
-                if (!data) return;
-                this.store.set('leaguesMap', { ...data });
-                data = Object.keys(data).map(k => data[k]);
                 this.store.set('leagues', data);
             })
             .catch(() => this.store.set('$page.loading', false));
@@ -59,34 +55,19 @@ export default class extends Controller {
         let newLeagueId = data.leagueId;
         
         // update leagues' playersCount if needed
+        let leagues = this.store.get('leagues');
         if (id === 'new') {
-            let leagues = this.store.get('leaguesMap');
             let newLeagueId = data.leagueId;
-            let newLeague = leagues[newLeagueId];
-            leagues = {
-                ...leagues,
-                [newLeagueId]: {
-                    ...newLeague,
-                    playersCount: newLeague.playersCount + 1
-                }
-            };
-            putLeagues(leagues);
+            let league = leagues.find(league => league.id == newLeagueId);
+            league.playersCount += 1;
+            putLeague(league.id, league);
         } else if (oldLeagueId && oldLeagueId !== data.leagueId) {
-            let leagues = this.store.get('leaguesMap');
-            let oldLeague = leagues[oldLeagueId];
-            let newLeague = leagues[newLeagueId];
-            leagues = {
-                ...leagues,
-                [oldLeagueId]: {
-                    ...oldLeague,
-                    playersCount: oldLeague.playersCount - 1
-                },
-                [newLeagueId]: {
-                    ...newLeague,
-                    playersCount: newLeague.playersCount + 1
-                }
-            };
-            putLeagues(leagues);
+            let oldLeague = leagues.find(league => league.id == oldLeagueId);
+            let newLeague = leagues.find(league => league.id == newLeagueId);
+            oldLeague.playersCount -= 1;
+            newLeague.playersCount += 1;
+            putLeague(oldLeague.id, oldLeague);
+            putLeague(newLeague.id, newLeague);
         }
 
         let postData = {
@@ -110,17 +91,11 @@ export default class extends Controller {
     onDelete() {
         //update leagues' playersCount
         let data = this.store.get('record');
-        let leagues = this.store.get('leaguesMap');
+        let leagues = this.store.get('leagues');
         let { leagueId } = data;
-        let league = leagues[leagueId];
-        leagues = {
-            ...leagues,
-            [leagueId]: {
-                ...league,
-                playersCount: league.playersCount - 1
-            }
-        };
-        putLeagues(leagues);
+        let league = leagues.find(league => league.id == leagueId);
+        league.playersCount -= 1;
+        putLeague(league.id, league);
         
         let id = this.store.get('record.id');
         if (id) {
@@ -129,7 +104,6 @@ export default class extends Controller {
                     this.onCancel();
                 });
         }
-        
     }
 
     onCancel() {
