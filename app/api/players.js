@@ -2,14 +2,13 @@ import {database} from './firebase';
 
 const dataRef = database.ref('/players');
 
-export function queryPlayers() {
+export function queryPlayers(leagueId) {
     return new Promise((resolve, reject) => {
-        dataRef.once("value")
-        .then(snapshot => {
-            let data = snapshot.val() || [];
-            resolve(Object.keys(data).map(k => data[k]));
-        })
-        .catch(e => reject(e));
+        getPlayersMap(leagueId)
+            .then((data={}) => {
+                resolve(Object.keys(data).map(k => data[k]));
+            })
+            .catch(e => reject(e));
     });
 }
 
