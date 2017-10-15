@@ -1,5 +1,10 @@
 import { Controller, History } from 'cx/ui';
+<<<<<<< HEAD
 import {queryLeagues, getPlayersMap, queryGames} from 'app/api';
+=======
+import {queryLeagues, queryPlayers, queryGames} from 'app/api';
+import bergerTable from 'berger-table-generator';
+>>>>>>> ...
 
 export default class extends Controller {
     onInit() {        
