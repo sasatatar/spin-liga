@@ -43,8 +43,12 @@ export default class extends Controller {
         this.store.set('loading', false);
     }
 
-    onGenerate() {
-        History.pushState({}, null, '~/admin/leagues/new')
+    async onGenerate() {
+        let leagueId = this.store.get('leagueId');
+        let players = await queryPlayers(leagueId);
+        players = players.map(p => p.id);
+        let games = bergerTable(players);
+        this.store.set('games', games);
     }
 
     onEdit(e, {store}) {
