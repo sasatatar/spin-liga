@@ -47,7 +47,7 @@ export default class extends Controller {
         let leagueId = this.store.get('leagueId');
         let players = await queryPlayers(leagueId);
         players = players.map(p => p.id);
-        let games = bergerTable(players);
+        let games = bergerTable(players).reduce((acc, round) => [...acc, ...round]);
         this.store.set('games', games);
     }
 
